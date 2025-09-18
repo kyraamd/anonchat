@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+ <html lang="id">
+ 
+ <head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>AnonChat - Chat Anonim</title>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+ rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <style>
+ :root {
+ --primary: #6c5ce7;
+ --secondary: #a29bfe;
+ --accent: #fd79a8;
+ --dark: #2d3436;
+ --light: #f7f7f7;
+ --success: #00b894;
+ --warning: #fdcb6e;
+ --error: #d63031;
+ --bg-gradient: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%);
+ --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+ }
+ 
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ }
+ 
+ body {
+ font-family: 'Poppins', sans-serif;
+ background: var(--bg-gradient);
+ min-height: 100vh;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 20px;
+ color: var(--dark);
+ }
+ 
+ .container {
+ width: 100%;
+ max-width: 800px;
+ background: rgba(255, 255, 255, 0.95);
+ border-radius: 20px;
+ overflow: hidden;
+ box-shadow: var(--card-shadow);
+ animation: fadeIn 0.8s ease-out;
+ }
+ 
+ @keyframes fadeIn {
+ from {
+ opacity: 0;
+ transform: translateY(20px);
+ }
+ 
+ to {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+ 
+ header {
+ background: var(--primary);
+ color: white;
+ padding: 20px;
+ text-align: center;
+ position: relative;
+ }
+ 
+ header h1 {
+ font-size: 2rem;
+ margin-bottom: 5px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 10px;
+ }
+ 
+ header p {
+ font-size: 1rem;
+ opacity: 0.9;
+ }
+ 
+ .online-indicator {
+ display: inline-block;
+ width: 12px;
+ height: 12px;
+ background: var(--success);
+ border-radius: 50%;
+ margin-left: 10px;
+ animation: pulse 2s infinite;
+ }
+ 
+ @keyframes pulse {
+ 0% {
+ transform: scale(1);
+ }
+ 
+ 50% {
+ transform: scale(1.2);
+ }
+ 
+ 100% {
+ transform: scale(1);
+ }
+ }
+ 
+ .chat-container {
+ display: flex;
+ flex-direction: column;
+ height: 500px;
+ }
+ 
+ .chat-messages {
+ flex: 1;
+ padding: 20px;
+ overflow-y: auto;
+ display: flex;
+ flex-direction: column;
+ gap: 15px;
+ background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="rgba(108, 92, 231, 0.03)" width="100" height="100"/></svg>');
+ }
+ 
+ .message {
+ max-width: 80%;
+ padding: 12px 18px;
+ border-radius: 18px;
+ position: relative;
+ animation: messageIn 0.4s ease-out;
+ box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+ }
+ 
+ @keyframes messageIn {
+ from {
+ opacity: 0;
+ transform: translateY(10px);
+ }
+ 
+ to {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+ 
+ .message-incoming {
+ align-self: flex-start;
+ background: white;
+ border-top-left-radius: 4px;
+ border: 1px solid #eee;
+ }
+ 
+ .message-outgoing {
+ align-self: flex-end;
+ background: var(--primary);
+ color: white;
+ border-top-right-radius: 4px;
+ }
+ 
+ .message-sender {
+ font-weight: 600;
+ font-size: 0.9rem;
+ margin-bottom: 5px;
+ display: flex;
+ align-items: center;
+ gap: 5px;
+ }
+ 
+ .message-content {
+ font-size: 1rem;
+ line-height: 1.4;
+ }
+ 
+ .message-time {
+ font-size: 0.7rem;
+ opacity: 0.7;
+ text-align: right;
+ margin-top: 5px;
+ }
+ 
+ .chat-input {
+ padding: 20px;
+ background: white;
+ border-top: 1px solid #eee;
+ display: flex;
+ gap: 10px;
+ }
+ 
+ .input-group {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+ }
+ 
+ input {
+ padding: 12px 15px;
+ border: 1px solid #ddd;
+ border-radius: 10px;
+ font-family: 'Poppins', sans-serif;
+ font-size: 1rem;
+ transition: all 0.3s ease;
+ }
+ 
+ input:focus {
+ outline: none;
+ border-color: var(--primary);
+ box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+ }
+ 
+ button {
+ background: var(--primary);
+ color: white;
+ border: none;
+ border-radius: 10px;
+ padding: 12px 20px;
+ cursor: pointer;
+ font-family: 'Poppins', sans-serif;
+ font-weight: 500;
+ transition: all 0.3s ease;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+ }
+ 
+ button:hover {
+ background: #5d4ae0;
+ transform: translateY(-2px);
+ box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+ }
+ 
+ button:active {
+ transform: translateY(0);
+ }
+ 
+ .notification {
+ position: fixed;
+ top: 20px;
+ right: 20px;
+ padding: 15px 20px;
+ border-radius: 10px;
+ background: white;
+ color: var(--dark);
+ box-shadow: var(--card-shadow);
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ transform: translateX(100%);
+ opacity: 0;
+ transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+ z-index: 1000;
+ }
+ 
+ .notification.show {
+ transform: translateX(0);
+ opacity: 1;
+ }
+ 
+ .notification.success {
+ border-left: 4px solid var(--success);
+ }
+ 
+ .notification.error {
+ border-left: 4px solid var(--error);
+ }
+ 
+ .github-info {
+ padding: 15px 20px;
+ background: rgba(108, 92, 231, 0.1);
+ border-top: 1px solid #eee;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 10px;
+ font-size: 0.9rem;
+ color: var(--dark);
+ }
+ 
+ /* Animasi untuk pesan baru */
+ @keyframes highlight {
+ 0% {
+ background-color: rgba(253, 121, 168, 0.2);
+ }
+ 
+ 100% {
+ background-color: transparent;
+ }
+ }
+ 
+ .message.new {
+ animation: highlight 1.5s ease-out, messageIn 0.4s ease-out;
+ }
+ 
+ /* Responsivitas */
+ @media (max-width: 600px) {
+ .chat-input {
+ flex-direction: column;
+ }
+ 
+ .message {
+ max-width: 90%;
+ }
+ 
+ header h1 {
+ font-size: 1.5rem;
+ }
+ }
+ </style>
+ </head>
+ 
+ <body>
+ <div class="container">
+ <header>
+ <h1>AnonChat <span class="online-indicator"></span></h1>
+ <p>Kirim pesan anonim secara real-time</p>
+ </header>
+ 
+ <div class="chat-container">
+ <div class="chat-messages" id="chatMessages">
+ <div class="message message-incoming">
+ <div class="message-sender">
+ <i class="fas fa-user-secret"></i> System
+ </div>
+ <div class="message-content">
+ Selamat datang di AnonChat! Mulai obrolan dengan mengetik pesan di bawah.
+ </div>
+ <div class="message-time">Just now</div>
+ </div>
+ </div>
+ 
+ <div class="chat-input">
+ <div class="input-group">
+ <input type="text" id="usernameInput" placeholder="Nama Anda" autocomplete="off">
+ <input type="text" id="messageInput" placeholder="Ketik pesan Anda..." autocomplete="off">
+ </div>
+ <button id="sendButton">
+ <i class="fas fa-paper-plane"></i> Kirim
+ </button>
+ </div>
+ 
+ <div class="github-info">
+ <i class="fab fa-github"></i>
+ <span>Pesan disimpan di GitHub Gist</span>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="notification" id="notification">
+ <i class="fas fa-info-circle"></i>
+ <span id="notificationText"></span>
+ </div>
+ 
+ <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const chatMessages = document.getElementById("chatMessages");
+  const usernameInput = document.getElementById("usernameInput");
+  const messageInput = document.getElementById("messageInput");
+  const sendButton = document.getElementById("sendButton");
+  const notification = document.getElementById("notification");
+  const notificationText = document.getElementById("notificationText");
+
+  let username = "";
+  let messages = [];
+
+  function showNotification(message, isSuccess = true) {
+    notificationText.textContent = message;
+    notification.className = isSuccess ? "notification success" : "notification error";
+    notification.classList.add("show");
+    setTimeout(() => notification.classList.remove("show"), 3000);
+  }
+
+  function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function addMessageToUI(msg, isNew = false) {
+    const messageEl = document.createElement("div");
+    messageEl.className =
+      "message " + (msg.sender === username ? "message-outgoing" : "message-incoming");
+    if (isNew) messageEl.classList.add("new");
+
+    messageEl.innerHTML = `
+      <div class="message-sender">
+        <i class="fas fa-user-${msg.sender === username ? "circle" : "secret"}"></i> 
+        ${msg.sender === username ? "Anda" : msg.sender}
+      </div>
+      <div class="message-content">${msg.message}</div>
+      <div class="message-time">${formatTime(msg.timestamp)}</div>
+    `;
+    chatMessages.appendChild(messageEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  async function fetchMessages() {
+    try {
+      const res = await fetch("/api/messages");
+      if (!res.ok) throw new Error("Fetch gagal");
+      messages = await res.json();
+
+      chatMessages.innerHTML = "";
+      // Pesan sambutan
+      const systemEl = document.createElement("div");
+      systemEl.className = "message message-incoming";
+      systemEl.innerHTML = `
+        <div class="message-sender"><i class="fas fa-user-secret"></i> System</div>
+        <div class="message-content">Selamat datang di AnonChat! Mulai obrolan dengan mengetik pesan di bawah.</div>
+        <div class="message-time">Just now</div>
+      `;
+      chatMessages.appendChild(systemEl);
+
+      messages.slice(-20).forEach((m) => addMessageToUI(m));
+    } catch (err) {
+      showNotification("Gagal mengambil pesan", false);
+    }
+  }
+
+  async function sendMessage() {
+    const text = messageInput.value.trim();
+    if (!username) return showNotification("Isi nama dulu", false);
+    if (!text) return showNotification("Isi pesan", false);
+
+    const newMessage = { sender: username, message: text };
+    addMessageToUI({ ...newMessage, timestamp: new Date().toISOString() }, true);
+
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newMessage),
+      });
+      if (!res.ok) throw new Error("Gagal kirim");
+      messageInput.value = "";
+    } catch (err) {
+      showNotification("Gagal kirim pesan", false);
+      chatMessages.removeChild(chatMessages.lastChild);
+    }
+  }
+
+  sendButton.addEventListener("click", sendMessage);
+  messageInput.addEventListener("keypress", (e) => e.key === "Enter" && sendMessage());
+  usernameInput.addEventListener("change", () => (username = usernameInput.value.trim()));
+
+  fetchMessages();
+  setInterval(fetchMessages, 10000);
+});
+</script>
+ </body>
+ 
+   </html>
