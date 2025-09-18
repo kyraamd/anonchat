@@ -1,0 +1,20 @@
+{
+  "name": "anonchat",
+  "version": "1.0.0",
+  "description": "Anonim Chat Codingku ID",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "keywords": [
+    "anonchat",
+    "vercel",
+    "github-api",
+    "chat"
+  ],
+  "author": "Codingku ID",
+  "license": "MIT"
+}
